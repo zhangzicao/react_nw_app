@@ -15,6 +15,8 @@ process.on('unhandledRejection', err => {
 require('../config/env');
 
 
+var path = require('path')
+var exec = require('child_process').exec
 const fs = require('fs');
 const chalk = require('chalk');
 const webpack = require('webpack');
@@ -27,13 +29,16 @@ const {
   prepareProxy,
   prepareUrls,
 } = require('react-dev-utils/WebpackDevServerUtils');
-const openBrowser = require('react-dev-utils/openBrowser');
+// const openBrowser = require('react-dev-utils/openBrowser');
 const paths = require('../config/paths');
 const config = require('../config/webpack.config.dev');
 const createDevServerConfig = require('../config/webpackDevServer.config');
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
+
+var nwPath = require('nw').findpath()
+var rootPath = path.resolve(__dirname, '../')
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
@@ -98,7 +103,26 @@ checkBrowsers(paths.appPath, isInteractive)
         clearConsole();
       }
       console.log(chalk.cyan('Starting the development server...\n'));
-      openBrowser(urls.localUrlForBrowser);
+
+      // Run the app
+      var closed=false;
+      var nwDev = exec(nwPath + ' ' + rootPath+"\\nw_config\\", { cwd: rootPath+"\\nw_config\\" }, function(err, stdout, stderr) {
+        console.log(err)
+        process.exit(0)
+        closed = true
+      })
+
+      nwDev.stdout.on('data', console.log)
+      nwDev.stdout.on('error', console.error)
+
+      // 退出时也关闭 NW 进程
+      process.on('exit', exitHandle)
+      process.on('uncaughtException', exitHandle)
+
+      function exitHandle(e) {
+        if (!closed) nwDev.kill()
+        console.log(e || '233333, bye~~~')
+      }
     });
 
     ['SIGINT', 'SIGTERM'].forEach(function(sig) {

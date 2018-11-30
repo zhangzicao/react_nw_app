@@ -1,0 +1,27 @@
+{
+  "name": "react_nw_app_in_dev",
+  "description": "This is a template of desktop application create by react and nwjs",
+  "nodejs":true,
+  "flavor": "sdk",
+  "platforms": "win64",
+  "main": "http://localhost:3000/",
+  "window": {
+    "title": "react_nw_app开发中",
+    "toolbar": true,
+    "width": 1024,
+    "height": 768,
+    "min_width": 1024,
+    "min_height": 768,
+    "resizable": false,
+    "kiosk": false,
+    "frame": true,
+    "fullscreen": false,
+    "show_in_taskbar": true
+  },
+  "webkit":{
+    "plugin": true
+  },
+  "node-remote": "<all_urls>",
+  "chromium-args": "--load-extension='./extension/react-devtools-3.4.2/'"
+
+}

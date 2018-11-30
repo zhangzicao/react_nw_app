@@ -16,6 +16,7 @@ require('../config/env');
 
 
 const path = require('path');
+var exec = require('child_process').exec
 const chalk = require('chalk');
 const fs = require('fs-extra');
 const webpack = require('webpack');
@@ -140,6 +141,17 @@ function build(previousFileSizes) {
         messages = formatWebpackMessages(
           stats.toJson({ all: false, warnings: true, errors: true })
         );
+        var tmpJson=require("../nw_config/package-build.json");
+        var baseJson=require("../package.json");
+        tmpJson=Object.assign({},baseJson,tmpJson)
+        fs.writeFileSync(path.relative(process.cwd(), paths.appBuild)+"/package.json", JSON.stringify(tmpJson, null, '  '), 'utf-8')
+        // var nwBuild = exec("build --tasks win-x64 --mirror https://dl.nwjs.io/ ./build/", function(err, stdout, stderr) {
+        //   console.log(err)
+        //   console.log(arguments)
+        //   if(err){
+        //     return console.log(err)
+        //   }
+        // })
       }
       if (messages.errors.length) {
         // Only keep the first error. Others are often indicative

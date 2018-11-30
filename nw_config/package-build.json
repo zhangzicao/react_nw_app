@@ -1,0 +1,40 @@
+{
+  "nodejs":true,
+  "flavor": "normal",
+  "platforms": "win64",
+  "main": "./index.html",
+  "window": {
+    "title": "reactNWApp",
+    "toolbar": true,
+    "width": 1024,
+    "height": 768,
+    "min_width": 1024,
+    "min_height": 768,
+    "resizable": false,
+    "kiosk": false,
+    "frame": true,
+    "fullscreen": false,
+    "show_in_taskbar": true,
+    "icon":"./logo.png"
+  },
+  "webkit":{
+    "plugin": true
+  },
+  "node-remote": "<all_urls>",
+  "build": {
+    "appId":"io.github.nwjs.${ name }",
+    "nwVersion": "0.34.0",
+    "packed": false,
+    "targets": [],
+    "nwFlavor":"normal",
+    "output":"../dist/",
+    "files":"./**",
+    "outputPattern": "${NAME} ${VERSION} ${PLATFORM} ${ARCH}",
+    "win": {
+      "productName": "reactNWApp",
+      "companyName": "zhangzicao",
+      "copyright": "copyright",
+      "icon": "./logo.ico"
+    }
+  }
+}
